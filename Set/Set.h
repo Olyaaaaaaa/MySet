@@ -87,7 +87,7 @@ void Set<T>::write_to(std::ostream& out)const
 }
 
 template <typename T>
-Set<T>::Set() : head(new Node(T ())), size(0) {}
+Set<T>::Set() : head(/*new Node(T ())*/nullptr), size(0) {}
 
 template<typename T>
 Set<T>::Set(const Set& S): size(S.size)
@@ -201,6 +201,7 @@ template<typename T>
 Set<T> Set<T>::set_union(const Set& S)const
 {
 	Set<T> result;
+	result.head = new Node(T());
 	Node* this_pointer = head;
 	Node* S_pointer = S.head;
 	Node* result_pointer = result.head;
@@ -255,6 +256,7 @@ template<typename T>
 Set<T> Set<T>::set_difference(const Set& S)const
 {
 	Set<T> result;
+	result.head = new Node(T());
 	Node* result_pointer = result.head;
 	Node* this_pointer = head;
 	Node* S_pointer = S.head;
@@ -295,6 +297,7 @@ template <typename T>
 Set<T> Set<T>::set_intersect(const Set& S)const
 {
 	Set<T> result;
+	result.head = new Node(T());
 	Node* this_pointer = head;
 	Node* S_pointer = S.head;
 	Node* result_pointer = result.head;
@@ -328,6 +331,7 @@ template<typename T>
 Set<T> Set<T>::set_sum_diff(const Set& S)const
 {
 	Set<T> result;
+	result.head = new Node(T());
 	Node* this_pointer = head;
 	Node* S_pointer = S.head;
 	Node* result_pointer = result.head;
