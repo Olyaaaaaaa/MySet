@@ -30,7 +30,19 @@ int main()
 	cout << "Enter your row: "; cin >> row;
 	cout << "First entering: " << first_entering(row) << endl;
 	cout << "All symbols that enter the row more than twice: " << enter_more_than_twice(row) << endl;
+	cout << "All symbols that enter the row more than twice(another way): " << more_than_twice(row) << endl;
 	cout << "All symbols that enter the row only once: " << enter_only_once(row) << endl;
 	cout << "All symbols that enter the row only once(another way): " << only_once(row) << endl;
+
+	Set<Products> Shops[4];
+	Shops[0].add_element(milk).add_element(water).add_element(butter).add_element(salt);
+	Shops[1].add_element(milk).add_element(cheese).add_element(butter).add_element(sugar).add_element(salt);
+	Shops[2].add_element(milk).add_element(bread).add_element(butter).add_element(coffee).add_element(salt);
+	Shops[3].add_element(milk).add_element(tea).add_element(butter).add_element(bread).add_element(salt);
+	cout << "Products available everywhere: " << in_every_store(Shops, 4) << endl;
+	/*enum Products { apples, banana, oranges };
+	Set<Products> Shop;
+	Shop.add_element(apples).add_element(oranges);
+	cout << Shop << endl;*/
 	return 0;
 }

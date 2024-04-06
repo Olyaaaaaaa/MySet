@@ -33,6 +33,19 @@ public:
 	bool is_valid(const T& x)const;//є тест
 	Set<T>& remove(const T& x);//є тест
 	void write_to(std::ostream& out)const;//є тест
+	T* all_values()const
+	{
+		T* arr = new T[this->size];
+		Node* curr = head;
+		int count = 0;
+		while (curr != nullptr)
+		{
+			arr[count] = curr->value;
+			++count;
+			curr = curr->next;
+		}
+		return arr;
+	}
 	
 	bool sets_are_equal(const Set<T>& A);
 	bool is_empty()const;
@@ -436,7 +449,7 @@ size_t digits(int number)
 	}
 	return Chars.size_of_set();
 }
-
+//Завдання 3(два способи, один з додатковою функцією)
 string first_entering(string& row)
 {
 	string result;
@@ -451,7 +464,6 @@ string first_entering(string& row)
 	}
 	return result;
 }
-
 size_t number_in_a_row(string& row, char s)
 {
 	size_t result = 0;
@@ -475,6 +487,23 @@ Set<char> enter_more_than_twice(string& row)
 		}
 	}
 	return set;
+}
+Set<char> more_than_twice(string& row)
+{
+	Set<char> once;
+	Set<char> more;
+	for (char c : row)
+	{
+		if (!once.is_valid(c))
+		{
+			once.add_element(c);
+		}
+		else if (once.is_valid(c) && !more.is_valid(c))
+		{
+			more.add_element(c);
+		}
+	}
+	return more;
 }
 Set<char> enter_only_once(string& row)
 {
@@ -505,4 +534,35 @@ Set<char> only_once(string& row)
 		}
 	}
 	return once;
+}
+
+enum Products { bread, butter, milk, cheese, meat, fish, salt, sugar, tea, coffee, water };
+Set<Products> in_every_store(Set<Products>* arr, size_t n)
+{
+	Set<Products> result;
+	size_t min = 0;
+	for (size_t i = 0; i < n; ++i)
+	{
+		if (arr[i].size_of_set() < min)
+			min = i;
+	}
+	Products* product_arr = arr[min].all_values();
+	size_t arr_size = arr[min].size_of_set();
+	for (size_t i = 0; i < arr_size; ++i)
+	{
+		bool validness = true;
+		for (size_t j = 0; j < n; ++j)
+		{
+			if (!arr[j].is_valid(product_arr[i]))
+			{
+				validness = false;
+				break;
+			}
+		}
+		if (validness)
+		{
+			result.add_element(product_arr[i]);
+		}
+	}
+	return result;
 }
