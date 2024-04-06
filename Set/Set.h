@@ -38,7 +38,6 @@ public:
 	bool is_empty()const;
 };
 
-
 template<typename T>
 std::ostream& operator<<(std::ostream& out, const Set<T>& S)
 {
@@ -87,7 +86,7 @@ void Set<T>::write_to(std::ostream& out)const
 }
 
 template <typename T>
-Set<T>::Set() : head(/*new Node(T ())*/nullptr), size(0) {}
+Set<T>::Set() : head(nullptr), size(0) {}
 
 template<typename T>
 Set<T>::Set(const Set& S): size(S.size)
@@ -426,5 +425,84 @@ Set<T>& Set<T>::remove(const T& x)
 		throw exception("This value is not valid. Remove function run into problem...");
 }
 
+size_t digits(int number)
+{
+	string str = to_string(number);
+	Set<char> Chars;
+	for (char c : str)
+	{
+		if (!Chars.is_valid(c))
+			Chars.add_element(c);
+	}
+	return Chars.size_of_set();
+}
 
+string first_entering(string& row)
+{
+	string result;
+	Set<char> Chars;
+	for (char c : row)
+	{
+		if (!Chars.is_valid(c))
+		{
+			Chars.add_element(c);
+			result += c;
+		}
+	}
+	return result;
+}
 
+size_t number_in_a_row(string& row, char s)
+{
+	size_t result = 0;
+	for (char c : row)
+	{
+		if (c == s)
+			++result;
+	}
+	return result;
+}
+Set<char> enter_more_than_twice(string& row)
+{
+	string all_symbols = first_entering(row);
+	Set<char> set;
+	for (char c : all_symbols)
+	{
+		int nof = number_in_a_row(row, c);
+		if (nof >= 2)
+		{
+			set.add_element(c);
+		}
+	}
+	return set;
+}
+Set<char> enter_only_once(string& row)
+{
+	Set<char> result;
+	for (char c : row)
+	{
+		if (!result.is_valid(c) && number_in_a_row(row, c) == 1)
+			result.add_element(c);
+	}
+	return result;
+}
+Set<char> only_once(string& row)
+{
+	Set<char> once;
+	Set<char> not_once;
+	for (char c : row)
+	{
+		if (!once.is_valid(c) && !not_once.is_valid(c))
+		{
+			once.add_element(c);
+		}
+		else
+		{
+			if (once.is_valid(c))
+				once.remove(c);
+			if (!not_once.is_valid(c))
+				not_once.add_element(c);
+		}
+	}
+	return once;
+}
