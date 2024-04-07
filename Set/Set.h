@@ -566,3 +566,37 @@ Set<Products> in_every_store(Set<Products>* arr, size_t n)
 	}
 	return result;
 }
+Set<Products> at_least_at_one(Set<Products>* arr, size_t n)
+{
+	//якщо хоч в одному магазині то можна знайти магазин з найбільшим асортиментом
+	// а вже продукти яких там нема перевіряти в кожному магазині окремо
+	int max = 0;
+	Set<Products> result;
+	for (size_t i = 0; i < n; ++i)
+	{
+		if (arr[i].size_of_set() > arr[max].size_of_set())
+			max = i;
+	}
+	result = arr[max];
+	Set<Products> all;
+	all.add_element(bread).add_element(butter).add_element(milk).add_element(cheese).add_element(meat)
+		.add_element(fish).add_element(salt).add_element(sugar).add_element(tea).add_element(coffee)
+		.add_element(water);
+	Set<Products> diff = all.set_difference(arr[max]);
+	Products* diff_arr = diff.all_values();
+	size_t diff_size = diff.size_of_set();
+	for (size_t i = 0; i < diff_size; ++i)
+	{
+		bool validness = false;
+		for (size_t j = 0; j < n; ++j)
+		{
+			if (arr[j].is_valid(diff_arr[i]))
+				validness = true;
+		}
+		if (validness)
+		{
+			result.add_element(diff_arr[i]);
+		}
+	}
+	return result;
+}

@@ -40,6 +40,7 @@ int main()
 	Shops[2].add_element(milk).add_element(bread).add_element(butter).add_element(coffee).add_element(salt);
 	Shops[3].add_element(milk).add_element(tea).add_element(butter).add_element(bread).add_element(salt);
 	cout << "Products available everywhere: " << in_every_store(Shops, 4) << endl;
+	cout << "Products available at least in one shop: " << at_least_at_one(Shops, 4) << endl;
 	/*enum Products { apples, banana, oranges };
 	Set<Products> Shop;
 	Shop.add_element(apples).add_element(oranges);
