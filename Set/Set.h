@@ -22,6 +22,7 @@ public:
 	Set(T* elements, size_t n);//є тест
 	Set(T element);//є тест 
 	~Set();
+	Set<T>& clear_set();
 	size_t size_of_set()const;//є тест
 	Set<T>& operator=(const Set& S);//є тест
 	Set<T>& add_element(T element);//е тест
@@ -49,6 +50,36 @@ public:
 	
 	bool sets_are_equal(const Set<T>& A);
 	bool is_empty()const;
+
+	Set<int> eratosphene(int start, int end)
+	{
+		Set<int> our_set;
+		for (int i = start; i <= end; ++i)
+		{
+			our_set.add_element(i);
+		}
+		Set<int> result(our_set);
+		Node* current = result.head;
+		while (current != nullptr)
+		{
+			Node* iterator = current->next;
+			while (iterator != nullptr)
+			{
+				if ((iterator->next != nullptr) && (iterator->next->value % current->value) == 0)
+				{
+					cout << "dd" << endl;
+					Node* victim = iterator->next;
+					cout << "deleted val: " << iterator->next->value << endl;
+					iterator->next = iterator->next->next;
+					delete victim;
+					cout << "deleted" << endl;
+				}
+				iterator = iterator->next;
+			}
+			current = current->next;
+		}
+		return result;
+	}
 };
 
 template<typename T>
@@ -142,12 +173,20 @@ Set<T>::Set(T element)
 template<typename T>
 Set<T>::~Set()
 {
+	this->clear_set();
+}
+
+template<typename T>
+Set<T>& Set<T>::clear_set()
+{
 	while (head != nullptr)
 	{
-		Node* victom = head;
+		Node* victim = head;
 		head = head->next;
-		delete victom;
+		delete victim;
 	}
+	this->size = 0;
+	return *this;
 }
 
 template<typename T>
@@ -161,7 +200,7 @@ Set<T>& Set<T>::operator=(const Set& S)
 {
 	if (this != &S)
 	{
-		this->~Set();
+		this->clear_set();
 		size = S.size;
 		Node* curr = S.head;
 		while (curr != nullptr)
@@ -464,6 +503,7 @@ string first_entering(string& row)
 	}
 	return result;
 }
+
 size_t number_in_a_row(string& row, char s)
 {
 	size_t result = 0;
@@ -505,6 +545,7 @@ Set<char> more_than_twice(string& row)
 	}
 	return more;
 }
+
 Set<char> enter_only_once(string& row)
 {
 	Set<char> result;
@@ -515,7 +556,8 @@ Set<char> enter_only_once(string& row)
 	}
 	return result;
 }
-Set<char> only_once(string& row)
+Set<char> only_once(string& row)// кращий варіант, оскільки обходимося без додаткових функцій.
+//ефективніший, оскільки у попередній функції один рядок обходився кілька разів через функцію, яка рахувала кількість входжень одного символу.
 {
 	Set<char> once;
 	Set<char> not_once;
@@ -539,64 +581,58 @@ Set<char> only_once(string& row)
 enum Products { bread, butter, milk, cheese, meat, fish, salt, sugar, tea, coffee, water };
 Set<Products> in_every_store(Set<Products>* arr, size_t n)
 {
-	Set<Products> result;
-	size_t min = 0;
-	for (size_t i = 0; i < n; ++i)
+	Set<Products> result = arr[0];
+	for (size_t i = 1; i < n; ++i)
 	{
-		if (arr[i].size_of_set() < min)
-			min = i;
-	}
-	Products* product_arr = arr[min].all_values();
-	size_t arr_size = arr[min].size_of_set();
-	for (size_t i = 0; i < arr_size; ++i)
-	{
-		bool validness = true;
-		for (size_t j = 0; j < n; ++j)
-		{
-			if (!arr[j].is_valid(product_arr[i]))
-			{
-				validness = false;
-				break;
-			}
-		}
-		if (validness)
-		{
-			result.add_element(product_arr[i]);
-		}
+		result = result.set_intersect(arr[i]);
 	}
 	return result;
 }
-Set<Products> at_least_at_one(Set<Products>* arr, size_t n)
+Set<Products> at_least_in_one(Set<Products>* arr, size_t n)
 {
-	//якщо хоч в одному магазині то можна знайти магазин з найбільшим асортиментом
-	// а вже продукти яких там нема перевіряти в кожному магазині окремо
-	int max = 0;
-	Set<Products> result;
-	for (size_t i = 0; i < n; ++i)
+	Set<Products> result = arr[0];
+	for (size_t i = 1; i < n; ++i)
 	{
-		if (arr[i].size_of_set() > arr[max].size_of_set())
-			max = i;
+		result = result.set_union(arr[i]);
 	}
-	result = arr[max];
+	return result;
+}
+Set<Products> unavailable(Set<Products>* arr, size_t n)
+{
 	Set<Products> all;
 	all.add_element(bread).add_element(butter).add_element(milk).add_element(cheese).add_element(meat)
 		.add_element(fish).add_element(salt).add_element(sugar).add_element(tea).add_element(coffee)
 		.add_element(water);
-	Set<Products> diff = all.set_difference(arr[max]);
-	Products* diff_arr = diff.all_values();
-	size_t diff_size = diff.size_of_set();
-	for (size_t i = 0; i < diff_size; ++i)
+	for (size_t i = 0; i < n; ++i)
 	{
-		bool validness = false;
-		for (size_t j = 0; j < n; ++j)
-		{
-			if (arr[j].is_valid(diff_arr[i]))
-				validness = true;
-		}
-		if (validness)
-		{
-			result.add_element(diff_arr[i]);
-		}
+		all = all.set_difference(arr[i]);
 	}
-	return result;
+	return all;
 }
+
+//1 завдання
+bool is_number(char symbol)
+{
+	return ((symbol >= '0') && (symbol <= '9'));
+}
+bool is_operator(char symbol)
+{
+	Set<char> operators;
+	operators.add_element('+').add_element('-').add_element('*').add_element('/').add_element('^');
+	return operators.is_valid(symbol);
+}
+bool is_bracket(char symbol)
+{
+	return (symbol == '(' || symbol == ')');
+}
+size_t number_of_symbols(string expression, bool(*predicate)(char))
+{
+	size_t count = 0;
+	for (char c : expression)
+	{
+		if (predicate(c))
+			++count;
+	}
+	return count;
+}
+

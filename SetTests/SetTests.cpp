@@ -230,5 +230,12 @@ namespace SetTests
 			Names.write_to(out); 
 			Assert::AreEqual("Artem Artur Ivan Oleg ", out.str().c_str());
 		}
+		TEST_METHOD(TestClear)
+		{
+			int arr[] = { 9,5,1,3 };
+			Set<int> A(arr, 4);
+			A.clear_set();
+			Assert::IsTrue(A.is_empty());
+		}
 	};
 }
