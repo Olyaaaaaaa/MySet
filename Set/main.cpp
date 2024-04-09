@@ -29,7 +29,14 @@ int main()
 	getline(cin, expression, '\n');
 	cout << "Amount of numbers: " << number_of_symbols(expression, is_number) << endl;
 	cout << "Amount of operators: " << number_of_symbols(expression, is_operator) << endl;
-	cout << "Amount of brackets: " << number_of_symbols(expression, is_bracket) << endl;
+	cout << "Amount of brackets: ";
+	size_t number_of_brackets = number_of_symbols(expression, is_bracket);
+	if (number_of_brackets % 2 == 0)
+	{
+		cout << number_of_brackets << endl;
+	}
+	else
+		cout << number_of_brackets << ", there is not enought brackets in this expression! " << endl;
 	cout << endl;
 
 	int value;
@@ -58,9 +65,9 @@ int main()
 	cout << "Products available at least in one shop: " << at_least_in_one(Shops, 4) << endl;
 	cout << "Products unavailable everywhere: " << unavailable(Shops, 4) << endl;
 	cout << endl;
-	cin.clear();
-	/*Set<int> set;
-	cout << "Simple numbers: " << set.eratosphene(2, 1254) << endl;*/
+
+	Set<int> set;
+	cout << "Simple numbers: " << set.eratosphene(1245) << endl;
 	
 	return 0;
 }

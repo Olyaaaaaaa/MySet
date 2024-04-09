@@ -51,14 +51,13 @@ public:
 	bool sets_are_equal(const Set<T>& A);
 	bool is_empty()const;
 
-	Set<int> eratosphene(int start, int end)
+	Set<int> eratosphene(int end)
 	{
-		Set<int> our_set;
-		for (int i = start; i <= end; ++i)
+		Set<int> result;
+		for (int i = 2; i <= end; ++i)
 		{
-			our_set.add_element(i);
+			result.add_element(i);
 		}
-		Set<int> result(our_set);
 		Node* current = result.head;
 		while (current != nullptr)
 		{
@@ -67,12 +66,9 @@ public:
 			{
 				if ((iterator->next != nullptr) && (iterator->next->value % current->value) == 0)
 				{
-					cout << "dd" << endl;
 					Node* victim = iterator->next;
-					cout << "deleted val: " << iterator->next->value << endl;
 					iterator->next = iterator->next->next;
 					delete victim;
-					cout << "deleted" << endl;
 				}
 				iterator = iterator->next;
 			}
@@ -635,4 +631,3 @@ size_t number_of_symbols(string expression, bool(*predicate)(char))
 	}
 	return count;
 }
-
