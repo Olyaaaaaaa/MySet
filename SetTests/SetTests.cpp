@@ -237,5 +237,12 @@ namespace SetTests
 			A.clear_set();
 			Assert::IsTrue(A.is_empty());
 		}
+		TEST_METHOD(TestingDigits)
+		{
+			Assert::AreEqual((size_t)4, digits(1234));
+			Assert::AreEqual((size_t)3, digits(123123));
+			Assert::AreEqual((size_t)5, digits(123412345));
+			Assert::AreEqual((size_t)2, digits(1221));
+		}
 	};
 }
